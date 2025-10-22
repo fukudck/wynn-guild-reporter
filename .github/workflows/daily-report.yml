@@ -1,0 +1,29 @@
+name: Daily Guild Report
+
+on:
+  schedule:
+    - cron: "0 0 * * *"   
+  workflow_dispatch:       
+
+jobs:
+  run-report:
+    runs-on: ubuntu-latest
+
+    env:
+      GUILD_PREFIX: ${{ secrets.GUILD_PREFIX }}
+      WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run guild report
+        run: python script.py
